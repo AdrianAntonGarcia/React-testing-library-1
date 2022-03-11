@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,11 +7,19 @@ import Popover from "react-bootstrap/Popover";
 
 export function SummaryForm() {
   const [tcChecked, setTcChecked] = useState(false);
+  const [first, setFirst] = useState(true);
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>No ice cream will actually be delivered</Popover.Body>
     </Popover>
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFirst(false);
+    }, 1000);
+  }, []);
+
   const checkboxLabel = (
     <span>
       I agree to
@@ -21,18 +29,22 @@ export function SummaryForm() {
     </span>
   );
   return (
-    <Form>
-      <Form.Group controlId="terms-and-conditions">
-        <Form.Check
-          type="checkbox"
-          checked={tcChecked}
-          onChange={(e) => setTcChecked(e.target.checked)}
-          label={checkboxLabel}
-        />
-      </Form.Group>
-      <Button variant="primary" type="submit" disabled={!tcChecked}>
-        Confirm order
-      </Button>
-    </Form>
+    <>
+      {first ? <div>hola</div> : <div>adios</div>}
+
+      <Form>
+        <Form.Group controlId="terms-and-conditions">
+          <Form.Check
+            type="checkbox"
+            checked={tcChecked}
+            onChange={(e) => setTcChecked(e.target.checked)}
+            label={checkboxLabel}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={!tcChecked}>
+          Confirm order
+        </Button>
+      </Form>
+    </>
   );
 }

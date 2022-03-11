@@ -8,7 +8,7 @@ import { SummaryForm } from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
 
 describe("Testing summary form", () => {
-  test("Initial conditions", () => {
+  test("Initial conditions", async () => {
     render(<SummaryForm />);
     const checkbox = screen.getByRole("checkbox", {
       name: /terms and conditions/i,
@@ -18,9 +18,16 @@ describe("Testing summary form", () => {
       name: /confirm order/i,
     });
     expect(confirmButton).toBeDisabled();
+
+    const greetings = screen.queryByText(/hola/i);
+    const greetings2 = await screen.findByText(/adios/i);
+
+    expect(greetings).toBeInTheDocument();
+    expect(greetings2).toBeInTheDocument();
   });
 
   test("Checkbox disables button on first click and enables second click", () => {
+    // await waitFor(() => );
     render(<SummaryForm />);
     const checkbox = screen.getByRole("checkbox", {
       name: /terms and conditions/i,
