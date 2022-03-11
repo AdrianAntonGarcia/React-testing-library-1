@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
 import { SummaryForm } from "../SummaryForm";
-import { hover } from "@testing-library/user-event/dist/hover";
 import userEvent from "@testing-library/user-event";
 
 describe("Testing summary form", () => {
@@ -54,16 +53,4 @@ describe("Testing summary form", () => {
     );
     expect(nullPopoverAgain).not.toBeInTheDocument();
   });
-
-  /* test("Checkbox and button", () => {
-      render(<SummaryForm></SummaryForm>);
-      const checkbox = screen.getByRole("checkbox", { name: "check" });
-      const button = screen.getByRole("button", { name: "button" });
-      expect(checkbox).not.toBeChecked();
-      expect(button).toBeDisabled();
-      fireEvent.click(checkbox);
-      expect(button).toBeEnabled();
-      fireEvent.click(checkbox);
-      expect(button).toBeDisabled();
-    });*/
 });
