@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import { OrderEntry } from "../OrderEntry";
 import { rest } from "msw";
@@ -16,10 +16,10 @@ describe("Order entry tests", () => {
     );
     render(<OrderEntry />);
 
-    const alerts = await screen.findAllByRole("alert", {
-      name: "An unexpected error ocurred. Please try again later.",
-    });
+    waitFor(async () => {
+      const alerts = await screen.findAllByRole("alert");
 
-    expect(alerts).toHaveLength(2);
+      expect(alerts).toHaveLength(2);
+    });
   });
 });
