@@ -26,7 +26,6 @@ describe("Displays", () => {
 
     // Confirm alt text of images
     const altText = toppingImages.map((element) => element.alt);
-    console.log(toppingImages);
     expect(altText).toEqual([
       "Cherries topping",
       "M&Ms topping",
