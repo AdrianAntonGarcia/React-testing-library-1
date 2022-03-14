@@ -8,7 +8,7 @@ function App() {
     <>
       <SummaryForm />
       <br />
-      <Options optionType={"scoops"}></Options>
+      <Options optionType={"toppings"}></Options>
     </>
   );
 }
