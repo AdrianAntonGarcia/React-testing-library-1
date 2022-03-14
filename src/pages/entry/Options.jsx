@@ -11,12 +11,20 @@ export const Options = ({ optionType }) => {
   const [error, setError] = useState(false);
   // optionType is 'scoops' or 'toppings'
   useEffect(() => {
+    let isMounted = true;
     axios
       .get(`http://localhost:3030/${optionType}`)
-      .then((res) => setItems(res.data))
+      .then((res) => {
+        if (isMounted) {
+          setItems(res.data);
+        }
+      })
       .catch((error) => {
         setError(true);
       });
+    return () => {
+      isMounted = false;
+    };
   }, [optionType]);
   if (error) {
     return <AlertBanner />;
