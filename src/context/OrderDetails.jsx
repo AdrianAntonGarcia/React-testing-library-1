@@ -2,10 +2,19 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { pricesPerItem } from "../constants";
 
-const OrderDetails = createContext();
+// format number as currency
+function formatCurrency(amount) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(amount);
+}
+
+const OrderDetails = createContext([]);
 
 // create custom hook to check wheter we're inside a provider
-export function useOrderDetails() {
+function useOrderDetails() {
   const context = useContext(OrderDetails);
   if (!context) {
     throw new Error(
@@ -15,24 +24,24 @@ export function useOrderDetails() {
   return context;
 }
 
-function calculateSubtotal(optionType, optionCounts) {
+function calculateSubtotal(optionType, orderDetails) {
   let optionCount = 0;
-  for (const count of optionCounts[optionType].values) {
+  for (const count of orderDetails[optionType].values()) {
     optionCount += count;
   }
   return optionCount * pricesPerItem[optionType];
 }
 
-export function OrderDetailsProvider(props) {
+function OrderDetailsProvider(props) {
   const [optionCounts, setOptionCounts] = useState({
     scoops: new Map(),
     toppings: new Map(),
   });
-
+  const zeroCurrency = formatCurrency(0);
   const [totals, setTotals] = useState({
-    scoops: 0,
-    toppings: 0,
-    grandTotal: 0,
+    scoops: zeroCurrency,
+    toppings: zeroCurrency,
+    grandTotal: zeroCurrency,
   });
 
   useEffect(() => {
@@ -40,9 +49,9 @@ export function OrderDetailsProvider(props) {
     const toppingsSubtotal = calculateSubtotal("toppings", optionCounts);
     const grandTotal = scoopsSubtotal + toppingsSubtotal;
     setTotals({
-      scoops: scoopsSubtotal,
-      toppings: toppingsSubtotal,
-      grandTotal,
+      scoops: formatCurrency(scoopsSubtotal),
+      toppings: formatCurrency(toppingsSubtotal),
+      grandTotal: formatCurrency(grandTotal),
     });
   }, [optionCounts]);
 
@@ -61,3 +70,5 @@ export function OrderDetailsProvider(props) {
 
   return <OrderDetails.Provider value={value} {...props} />;
 }
+
+export { OrderDetailsProvider, useOrderDetails };
