@@ -1,4 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+} from "../../../test-utils/testing-library-utils";
 
 import { OrderEntry } from "../OrderEntry";
 import { rest } from "msw";
@@ -16,7 +20,7 @@ describe("Order entry tests", () => {
     );
     render(<OrderEntry />);
 
-    waitFor(async () => {
+    await waitFor(async () => {
       const alerts = await screen.findAllByRole("alert");
 
       expect(alerts).toHaveLength(2);
